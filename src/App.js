@@ -3,6 +3,7 @@ import { Jumbotron } from "react-bootstrap";
 import { connect } from 'react-redux';
 
 import './App.css';
+import Main from  './components/Main';
 import Splash from  './components/Splash';
 
 import { fetchCurrentUser } from './actions';
@@ -18,13 +19,13 @@ class App extends Component {
 
   render() {
     if (this.props.currentUser) {
-      // User is signed in, show the app (TODO)
-      return <h2>Logged in as {this.props.currentUser.username}!</h2>
+      // User is signed in, show the app
+      return <Main/>
     } else {
       // No user, show the splash page for login/registration
       return ( 
         <Jumbotron className="vertical-center">
-          <Splash currentUser={this.props.currentUser}/>
+          <Splash/>
         </Jumbotron>
       )
     }

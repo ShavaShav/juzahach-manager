@@ -71,7 +71,7 @@ class Splash extends Component {
     return (
       <Grid>
         <Col>
-          <h1 style={{textAlign: 'center'}}>Juzahach Vehicle Tracking System</h1>
+          <h1 style={{textAlign: 'center'}}>Juzahach Edge-Manager</h1>
           { this.renderBody() }
         </Col>
       </Grid>
