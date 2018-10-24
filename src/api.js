@@ -60,10 +60,12 @@ const requests = {
 };
 
 const User = {
-  register: (email, username, password) =>
-    requests.post('/user/register', { user: { email, username, password }}),
-  login: (username, password) =>
-    requests.post('/user/login', { user: { username, password }})
+  current: () => 
+    requests.get('/user'), 
+  register: (username, email, password) =>
+    requests.post('/user/register', { user: { username, email, password }}),
+  login: (email, password) =>
+    requests.post('/user/login', { user: { email, password }})
 };
 
 const Device = {
@@ -79,7 +81,7 @@ const Device = {
     requests.delete('/device/' + id),
   locations: (id, startTime, endTime) => {
     let endpont = '/device/locations/' + id;
-    if (arguments.length > 1) {
+    if (startTime || endTime) {
       // start and/or end time requested
       let args = [];
       if (startTime) args.push('start=' + startTime);
