@@ -20,7 +20,7 @@ class App extends Component {
   render() {
     if (this.props.currentUser) {
       // User is signed in, show the app
-      return <Main/>
+    return <Main/>
     } else {
       // No user, show the splash page for login/registration
       return ( 
