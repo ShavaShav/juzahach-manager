@@ -3,7 +3,8 @@ import {
   LOGIN,
   REGISTER,
   FETCH_CURRENT_USER,
-  LOGOUT
+  LOGOUT,
+  REGISTER_DEVICE
 } from './actions'
 
 /**
@@ -28,6 +29,19 @@ function currentUser(state = null, action) {
   }
 }
 
+function accessCode(state = null, action) {
+  switch (action.type) {
+    case `${REGISTER_DEVICE}_PENDING`:
+      return 'PENDING'; // loading state
+    case `${REGISTER_DEVICE}_FULFILLED`:
+      return action.payload.body.accessCode;
+    case `${REGISTER_DEVICE}_REJECTED`:
+      return ''; // reset access code
+    default:
+      return state
+  }
+}
+
 export default combineReducers({
-  currentUser
+  currentUser, accessCode
 })

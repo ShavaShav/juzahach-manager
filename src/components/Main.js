@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Grid, Navbar, Nav, NavItem } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { logout } from '../actions';
-
+import AddDevice from './AddDevice';
 
 class Main extends Component {
 
@@ -26,6 +26,7 @@ class Main extends Component {
 
   render() {
     return (
+      <div>
       <Navbar inverse fixedTop>
         <Grid>
           <Navbar.Header>
@@ -46,6 +47,11 @@ class Main extends Component {
           </Navbar.Collapse>
         </Grid>
       </Navbar>
+      <br/>
+      <br/>
+      <br/>
+      <AddDevice/>
+      </div>
     );
   }
 }
