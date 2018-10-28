@@ -15,6 +15,10 @@ export const LOGIN = 'LOGIN';
 export const LOGOUT = 'LOGOUT';
 export const REGISTER = 'REGISTER';
 
+export const REGISTER_DEVICE = 'REGISTER_DEVICE';
+export const FETCH_DEVICE = 'FETCH_DEVICE';
+export const FETCH_DEVICE_LIST = 'FETCH_DEVICE_LIST';
+
 /*
  * Synchronous Action Creators
  */
@@ -60,6 +64,33 @@ export function register(username, email, password) {
       payload: api.User.register(username, email, password)
     }).then(res => {
       localStorage.setItem('token', res.value.body.user.token);
+    });
+  }
+}
+
+export function registerDevice() {
+  return dispatch => {
+    dispatch({ 
+      type: REGISTER_DEVICE,
+      payload: api.Device.register()
+    });
+  }
+}
+
+export function fetchDevice(id) {
+  return dispatch => {
+    dispatch({ 
+      type: FETCH_DEVICE,
+      payload: api.Device.get(id)
+    });
+  }
+}
+
+export function fetchDeviceList() {
+  return dispatch => {
+    dispatch({ 
+      type: FETCH_DEVICE_LIST,
+      payload: api.Device.all()
     });
   }
 }
