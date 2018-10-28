@@ -15,6 +15,8 @@ export const LOGIN = 'LOGIN';
 export const LOGOUT = 'LOGOUT';
 export const REGISTER = 'REGISTER';
 
+export const REGISTER_DEVICE = 'REGISTER_DEVICE';
+
 /*
  * Synchronous Action Creators
  */
@@ -63,3 +65,13 @@ export function register(username, email, password) {
     });
   }
 }
+
+export function registerDevice() {
+  return dispatch => {
+    dispatch({ 
+      type: REGISTER_DEVICE,
+      payload: api.Device.register()
+    });
+  }
+}
+
