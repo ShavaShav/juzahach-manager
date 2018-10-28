@@ -4,7 +4,9 @@ import {
   REGISTER,
   FETCH_CURRENT_USER,
   LOGOUT,
-  REGISTER_DEVICE
+  REGISTER_DEVICE,
+  FETCH_DEVICE_LIST,
+  FETCH_DEVICE
 } from './actions'
 
 /**
@@ -29,6 +31,24 @@ function currentUser(state = null, action) {
   }
 }
 
+function deviceList(state = null, action) {
+  switch (action.type) {
+    case `${FETCH_DEVICE_LIST}_FULFILLED`:
+      return action.payload.body.devices;
+    default:
+      return state
+  }
+}
+
+function currentDevice(state = null, action) {
+  switch (action.type) {
+    case `${FETCH_DEVICE}_FULFILLED`:
+      return action.payload.body.device;
+    default:
+      return state
+  }
+}
+
 function accessCode(state = null, action) {
   switch (action.type) {
     case `${REGISTER_DEVICE}_PENDING`:
@@ -43,5 +63,8 @@ function accessCode(state = null, action) {
 }
 
 export default combineReducers({
-  currentUser, accessCode
+  accessCode,
+  deviceList,
+  currentDevice,
+  currentUser
 })

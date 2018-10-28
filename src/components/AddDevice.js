@@ -56,7 +56,7 @@ class AddDevice extends Component {
   render() {
     return (
       <div>
-        <Button bsStyle="primary" bsSize="large" onClick={this.handleShow}>
+        <Button bsStyle="primary" onClick={this.handleShow}>
           Register New Device
         </Button>
 
