@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Grid, Navbar, Nav, NavItem } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { logout } from '../actions';
-import AddDevice from './AddDevice';
+import DeviceList from './DeviceList';
 
 class Main extends Component {
 
@@ -27,30 +27,28 @@ class Main extends Component {
   render() {
     return (
       <div>
-      <Navbar inverse fixedTop>
-        <Grid>
-          <Navbar.Header>
-              <Navbar.Brand>
-                <a href="./">Edge-Manager</a>
-              </Navbar.Brand>
-              <Navbar.Toggle />
-          </Navbar.Header>
-          <Navbar.Collapse>
-            <Nav pullRight onSelect={this.handleNavClick}>
-              <NavItem>
-                {this.props.currentUser.username}
-              </NavItem>
-              <NavItem eventKey={Main.LOGOUT}>
-                Logout
-              </NavItem>
-            </Nav>
-          </Navbar.Collapse>
-        </Grid>
-      </Navbar>
-      <br/>
-      <br/>
-      <br/>
-      <AddDevice/>
+        <Navbar inverse fixedTop>
+          <Grid>
+            <Navbar.Header>
+                <Navbar.Brand>
+                  <a href="./">Edge-Manager</a>
+                </Navbar.Brand>
+                <Navbar.Toggle />
+            </Navbar.Header>
+            <Navbar.Collapse>
+              <Nav pullRight onSelect={this.handleNavClick}>
+                <NavItem>
+                  {this.props.currentUser.username}
+                </NavItem>
+                <NavItem eventKey={Main.LOGOUT}>
+                  Logout
+                </NavItem>
+              </Nav>
+            </Navbar.Collapse>
+          </Grid>
+        </Navbar>
+
+        <DeviceList/>
       </div>
     );
   }
