@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { Grid, Navbar, Nav, NavItem, Row, Col, Well } from 'react-bootstrap';
+import { Grid, Navbar, Nav, NavItem, Col, Well } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { logout } from '../actions';
 import DeviceList from './DeviceList';
+import RoadMap from './RoadMap';
 
 class Main extends Component {
 
@@ -47,15 +48,15 @@ class Main extends Component {
             </Navbar.Collapse>
           </Grid>
         </Navbar>
-        <Grid style={{paddingTop:'80px'}}>
-          <Row>
-            <Col xs={6} md={4}>
+        <Grid style={{paddingTop:'80px'}} fluid="true">
+            <Col xs={6} md={3} style={{align: 'center'}}>
               <DeviceList/>
             </Col>
-            <Col xs={12} md={8} fluid>
-              <Well>Map</Well>
-            </Col>
-          </Row>     
+            <Col xs={12} md={9}>
+              <Well>
+                <RoadMap/>
+              </Well>
+            </Col>    
         </Grid>
       </div>
     );

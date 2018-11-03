@@ -15,7 +15,7 @@ class DeviceList extends Component {
     return (
       <ListGroup>
         { this.props.deviceList.map(device => (
-          <ListGroupItem id={device.id} onClick={this.onDeviceClick}>
+          <ListGroupItem id={device.id} key={device.id} onClick={this.onDeviceClick}>
             {device.name}
           </ListGroupItem>
         ))}
