@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Grid, Col, ListGroup, ListGroupItem, Glyphicon } from 'react-bootstrap';
+import { Button, ListGroup, ListGroupItem, Glyphicon, ButtonGroup } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import AddDevice from './AddDevice';
 
@@ -7,8 +7,8 @@ import { fetchDeviceList, fetchDevice } from '../actions';
 
 class DeviceList extends Component {
 
-  handleClick = (e) => {
-    // this.props.fetchDevice(e.target.id);
+  componentWillMount() {
+    this.props.fetchDeviceList();
   }
 
   renderDeviceList() {
@@ -25,15 +25,19 @@ class DeviceList extends Component {
   
   render() {
     return (
-      <Grid>
-        <Col>
+      <div>
+        <ButtonGroup style={{
+          display: 'flex', 
+          justifyContent: 'space-between', 
+          marginBottom: '25px'
+        }}>
           <AddDevice/>
-          { this.renderDeviceList() }
-          <Button onClick={this.props.fetchDeviceList}>
+          <Button style={{width: '150px'}} onClick={this.props.fetchDeviceList}>
             <Glyphicon glyph="refresh" />
           </Button>
-        </Col>
-      </Grid>
+        </ButtonGroup>
+        { this.renderDeviceList() }
+      </div>
     )
   }
 }

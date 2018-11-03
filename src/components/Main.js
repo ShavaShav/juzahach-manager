@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Grid, Navbar, Nav, NavItem } from 'react-bootstrap';
+import { Grid, Navbar, Nav, NavItem, Row, Col, Well } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { logout } from '../actions';
 import DeviceList from './DeviceList';
@@ -48,7 +48,14 @@ class Main extends Component {
           </Grid>
         </Navbar>
         <Grid style={{paddingTop:'80px'}}>
-          <DeviceList/>        
+          <Row>
+            <Col xs={6} md={4}>
+              <DeviceList/>
+            </Col>
+            <Col xs={12} md={8} fluid>
+              <Well>Map</Well>
+            </Col>
+          </Row>     
         </Grid>
       </div>
     );
