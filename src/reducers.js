@@ -6,7 +6,8 @@ import {
   LOGOUT,
   REGISTER_DEVICE,
   FETCH_DEVICE_LIST,
-  FETCH_DEVICE
+  FETCH_DEVICE,
+  EDIT_DEVICE
 } from './actions'
 
 /**
@@ -35,6 +36,12 @@ function deviceList(state = null, action) {
   switch (action.type) {
     case `${FETCH_DEVICE_LIST}_FULFILLED`:
       return action.payload.body.devices;
+    case `${EDIT_DEVICE}_FULFILLED`:
+      // Replace the device with the updated device from server
+      const receivedDevice = action.payload.body.device;
+      return state.map((device) => 
+        device.id === receivedDevice.id ? receivedDevice : device
+      );
     default:
       return state
   }

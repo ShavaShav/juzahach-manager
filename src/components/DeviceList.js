@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Button, ListGroup, ListGroupItem, Glyphicon, ButtonGroup } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import AddDevice from './AddDevice';
+import EditDevice from './EditDevice';
 
 import { fetchDeviceList, fetchDevice } from '../actions';
 
@@ -15,8 +16,9 @@ class DeviceList extends Component {
     return (
       <ListGroup>
         { this.props.deviceList.map(device => (
-          <ListGroupItem id={device.id} key={device.id} onClick={this.onDeviceClick}>
+          <ListGroupItem className="clearfix" id={device.id} key={device.id} onClick={this.onDeviceClick}>
             {device.name}
+            <EditDevice className="pull-right" device={device} />
           </ListGroupItem>
         ))}
       </ListGroup>

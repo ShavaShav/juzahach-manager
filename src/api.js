@@ -53,8 +53,8 @@ const requests = {
     apiFetch(path, 'DELETE'),
   get: path =>
     apiFetch(path, 'GET'),
-  patch: (path, body) =>
-    apiFetch(path, 'PATCH', body),
+  put: (path, body) =>
+    apiFetch(path, 'PUT', body),
   post: (path, body) =>
     apiFetch(path, 'POST', body)
 };
@@ -76,7 +76,7 @@ const Device = {
   get: (id) =>
     requests.get('/device/' + id),
   update: (id, changes) =>
-    requests.patch('/device/' + id, { device: changes }),
+    requests.put('/device/' + id, { device: changes }),
   delete: (id) =>
     requests.delete('/device/' + id),
   locations: (id, startTime, endTime) => {

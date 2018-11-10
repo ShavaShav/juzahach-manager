@@ -18,6 +18,8 @@ export const REGISTER = 'REGISTER';
 export const REGISTER_DEVICE = 'REGISTER_DEVICE';
 export const FETCH_DEVICE = 'FETCH_DEVICE';
 export const FETCH_DEVICE_LIST = 'FETCH_DEVICE_LIST';
+export const EDIT_DEVICE = 'EDIT_DEVICE';
+
 
 /*
  * Synchronous Action Creators
@@ -91,6 +93,15 @@ export function fetchDeviceList() {
     dispatch({ 
       type: FETCH_DEVICE_LIST,
       payload: api.Device.all()
+    });
+  }
+}
+
+export function editDevice(id, changes) {
+  return dispatch => {
+    dispatch({ 
+      type: EDIT_DEVICE,
+      payload: api.Device.update(id, changes)
     });
   }
 }
