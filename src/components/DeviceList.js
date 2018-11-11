@@ -3,19 +3,23 @@ import { Button, ListGroup, ListGroupItem, Glyphicon, ButtonGroup } from 'react-
 import { connect } from 'react-redux';
 import AddDevice from './AddDevice';
 
-import { fetchDeviceList, fetchDevice } from '../actions';
+import { fetchDeviceList, setCurrentDevice } from '../actions';
 
 class DeviceList extends Component {
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.fetchDeviceList();
+  }
+
+  handleClick = device => e => {
+    this.props.setCurrentDevice(device);
   }
 
   renderDeviceList() {
     return (
       <ListGroup>
         { this.props.deviceList.map(device => (
-          <ListGroupItem id={device.id} key={device.id} onClick={this.onDeviceClick}>
+          <ListGroupItem key={device.id} onClick={this.handleClick(device)}>
             {device.name}
           </ListGroupItem>
         ))}
@@ -49,7 +53,7 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = {
-  fetchDeviceList, fetchDevice
+  fetchDeviceList, setCurrentDevice
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(DeviceList);

@@ -79,16 +79,17 @@ const Device = {
     requests.patch('/device/' + id, { device: changes }),
   delete: (id) =>
     requests.delete('/device/' + id),
-  locations: (id, startTime, endTime) => {
-    let endpont = '/device/locations/' + id;
-    if (startTime || endTime) {
-      // start and/or end time requested
+  locations: (id, limit, startTime, endTime) => {
+    let endpont = '/device/' + id + '/locations';
+    if (limit || startTime || endTime) {
+      // pagination requested
       let args = [];
+      if (limit) args.push('limit=' + limit);
       if (startTime) args.push('start=' + startTime);
       if (endTime) args.push('end=' + endTime);
       endpont += '?' + args.join('&');
     }
-    requests.get(endpont);
+    return requests.get(endpont);
   }
 };
 

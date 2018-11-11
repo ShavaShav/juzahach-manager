@@ -48,7 +48,7 @@ class Main extends Component {
             </Navbar.Collapse>
           </Grid>
         </Navbar>
-        <Grid style={{paddingTop:'80px'}} fluid="true">
+        <Grid style={{paddingTop:'80px'}} fluid={true}>
             <Col xs={6} md={3} style={{align: 'center'}}>
               <DeviceList/>
             </Col>

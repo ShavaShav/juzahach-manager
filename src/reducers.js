@@ -6,7 +6,9 @@ import {
   LOGOUT,
   REGISTER_DEVICE,
   FETCH_DEVICE_LIST,
-  FETCH_DEVICE
+  FETCH_DEVICE,
+  SET_CURRENT_DEVICE,
+  FETCH_LOCATION_LIST
 } from './actions'
 
 /**
@@ -42,8 +44,19 @@ function deviceList(state = null, action) {
 
 function currentDevice(state = null, action) {
   switch (action.type) {
+    case SET_CURRENT_DEVICE:
+      return action.device;
     case `${FETCH_DEVICE}_FULFILLED`:
       return action.payload.body.device;
+    default:
+      return state
+  }
+}
+
+function currentLocations(state = null, action) {
+  switch (action.type) {
+    case `${FETCH_LOCATION_LIST}_FULFILLED`:
+      return action.payload.body.locations;
     default:
       return state
   }
@@ -66,5 +79,6 @@ export default combineReducers({
   accessCode,
   deviceList,
   currentDevice,
-  currentUser
+  currentUser,
+  currentLocations
 })

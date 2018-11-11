@@ -18,6 +18,9 @@ export const REGISTER = 'REGISTER';
 export const REGISTER_DEVICE = 'REGISTER_DEVICE';
 export const FETCH_DEVICE = 'FETCH_DEVICE';
 export const FETCH_DEVICE_LIST = 'FETCH_DEVICE_LIST';
+export const SET_CURRENT_DEVICE = 'SET_CURRENT_DEVICE';
+
+export const FETCH_LOCATION_LIST = 'FETCH_LOCATION_LIST';
 
 /*
  * Synchronous Action Creators
@@ -28,6 +31,13 @@ export function logout() {
 
   return {
     type: LOGOUT
+  }
+}
+
+export function setCurrentDevice(device) {
+  return {
+    type: SET_CURRENT_DEVICE,
+    device: device
   }
 }
 
@@ -91,6 +101,15 @@ export function fetchDeviceList() {
     dispatch({ 
       type: FETCH_DEVICE_LIST,
       payload: api.Device.all()
+    });
+  }
+}
+
+export function fetchLocations(deviceId, limit, start, end) {
+  return dispatch => {
+    dispatch({ 
+      type: FETCH_LOCATION_LIST,
+      payload: api.Device.locations(deviceId, limit, start, end)
     });
   }
 }
