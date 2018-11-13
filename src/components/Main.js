@@ -39,6 +39,12 @@ class Main extends Component {
             <Navbar.Collapse>
               <Nav pullRight onSelect={this.handleNavClick}>
                 <NavItem>
+                  Live
+                </NavItem>
+                <NavItem>
+                  Historical
+                </NavItem>
+                <NavItem>
                   {this.props.currentUser.username}
                 </NavItem>
                 <NavItem eventKey={Main.LOGOUT}>

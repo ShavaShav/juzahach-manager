@@ -22,6 +22,7 @@ export const FETCH_DEVICE_LIST = 'FETCH_DEVICE_LIST';
 export const SET_CURRENT_DEVICE = 'SET_CURRENT_DEVICE';
 
 export const FETCH_LOCATION_LIST = 'FETCH_LOCATION_LIST';
+export const FETCH_LIVE_LOCATION_LIST = 'FETCH_LIVE_LOCATION_LIST';
 
 /*
  * Synchronous Action Creators
@@ -120,6 +121,15 @@ export function fetchLocations(deviceId, limit, start, end) {
     dispatch({ 
       type: FETCH_LOCATION_LIST,
       payload: api.Device.locations(deviceId, limit, start, end)
+    });
+  }
+}
+
+export function fetchLiveLocations(limit, start, end) {
+  return dispatch => {
+    dispatch({ 
+      type: FETCH_LIVE_LOCATION_LIST,
+      payload: api.User.locations(limit, start, end)
     });
   }
 }

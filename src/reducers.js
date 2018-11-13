@@ -9,7 +9,8 @@ import {
   FETCH_DEVICE,
   EDIT_DEVICE,
   SET_CURRENT_DEVICE,
-  FETCH_LOCATION_LIST
+  FETCH_LOCATION_LIST,
+  FETCH_LIVE_LOCATION_LIST
 } from './actions'
 
 /**
@@ -69,6 +70,15 @@ function currentLocations(state = null, action) {
   }
 }
 
+function liveLocations(state = null, action) {
+  switch (action.type) {
+    case `${FETCH_LIVE_LOCATION_LIST}_FULFILLED`:
+      return action.payload.body.deviceLocations;
+    default:
+      return state
+  }
+}
+
 function accessCode(state = null, action) {
   switch (action.type) {
     case `${REGISTER_DEVICE}_PENDING`:
@@ -87,5 +97,6 @@ export default combineReducers({
   deviceList,
   currentDevice,
   currentUser,
-  currentLocations
+  currentLocations,
+  liveLocations
 })

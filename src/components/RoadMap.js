@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import { Map, Marker, Popup, TileLayer } from 'react-leaflet'
 import { connect } from 'react-redux';
 
-import { fetchLocations } from '../actions';
+import { fetchLiveLocations } from '../actions';
 
 class RoadMap extends Component {
 
@@ -12,40 +12,45 @@ class RoadMap extends Component {
 
   constructor(props) {
     super(props);
-    this.fetchLiveLocation = this.fetchLiveLocation.bind(this);
+    this.updateLiveLocations = this.updateLiveLocations.bind(this);
     this.renderMarkers = this.renderMarkers.bind(this);
   } 
 
   componentDidMount() {
-    // Fetch the latest location every 10 seconds
-    this.fetchLiveLocation();
-    setInterval(this.fetchLiveLocation, 10000);
+    // Fetch the latest locations every 5 seconds
+    this.updateLiveLocations();
+    setInterval(this.updateLiveLocations, 5000);
   }
 
-  fetchLiveLocation() {
-    if (this.props.currentDevice) {
-      this.props.fetchLocations(this.props.currentDevice.id, 1);
+  updateLiveLocations() {
+    if (this.props.deviceList && this.props.deviceList.length > 0) {
+      this.props.fetchLiveLocations(1); // latest for each device
     }
   }
 
   renderMarkers() {
-    if (this.props.currentDevice && this.props.currentLocations) {
-      const deviceName = this.props.currentDevice.name;
+    // TODO: Use custom markers (Disabled, coloured to diff, etc.)
+    if (this.props.liveLocations) {
       return (
         <div>
-          { this.props.currentLocations.map(location => (
-            <Marker key={location.id} position={[location.latitude, location.longitude]}>
-              <Popup>
-                { deviceName }
-                <br/>
-                { new Date(location.timestamp).toLocaleString() }
-              </Popup>
-            </Marker>
-          ))}
+          { 
+            this.props.liveLocations.map(device => (
+              device.location.map(location => (
+                // TODO: Draw route through locations instead of markers (when length > 1)
+                <Marker key={location.id} position={[location.latitude, location.longitude]}>
+                  <Popup>
+                    { device.name }
+                    <br/>
+                    { new Date(location.timestamp).toLocaleString() }
+                  </Popup>
+                </Marker>
+              ))
+            ))
+          }
         </div>
       )
     } else {
-      return undefined;
+      return undefined; // no location data yet
     }
   }
 
@@ -65,13 +70,13 @@ class RoadMap extends Component {
 
 const mapStateToProps = state => {
   return {
-    currentDevice: state.currentDevice,
-    currentLocations: state.currentLocations
+    deviceList: state.deviceList,
+    liveLocations: state.liveLocations
   }
 };
 
 const mapDispatchToProps = {
-  fetchLocations
+  fetchLiveLocations
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(RoadMap);

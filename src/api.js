@@ -65,7 +65,19 @@ const User = {
   register: (username, email, password) =>
     requests.post('/user/register', { user: { username, email, password }}),
   login: (email, password) =>
-    requests.post('/user/login', { user: { email, password }})
+    requests.post('/user/login', { user: { email, password }}),
+  locations: (limit, startTime, endTime) => {
+    let endpont = '/user/locations';
+    if (limit || startTime || endTime) {
+      // pagination requested
+      let args = [];
+      if (limit) args.push('limit=' + limit);
+      if (startTime) args.push('start=' + startTime);
+      if (endTime) args.push('end=' + endTime);
+      endpont += '?' + args.join('&');
+    }
+    return requests.get(endpont);
+  }
 };
 
 const Device = {
