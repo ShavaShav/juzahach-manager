@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import { Map, Marker, Popup, TileLayer } from 'react-leaflet'
+import { Map, Marker, Popup, TileLayer, Polyline } from 'react-leaflet'
 import { connect } from 'react-redux';
 
 import { fetchLiveLocations } from '../actions';
@@ -13,7 +13,8 @@ class RoadMap extends Component {
   constructor(props) {
     super(props);
     this.updateLiveLocations = this.updateLiveLocations.bind(this);
-    this.renderMarkers = this.renderMarkers.bind(this);
+    this.renderLiveOverlay = this.renderLiveOverlay.bind(this);
+    this.renderLiveLocation = this.renderLiveLocation.bind(this);
   } 
 
   componentDidMount() {
@@ -24,27 +25,44 @@ class RoadMap extends Component {
 
   updateLiveLocations() {
     if (this.props.deviceList && this.props.deviceList.length > 0) {
-      this.props.fetchLiveLocations(1); // latest for each device
+      this.props.fetchLiveLocations(10); // latest for each device
     }
   }
 
-  renderMarkers() {
+  renderLiveLocation(deviceLocations) {
+
+    // Device *always* contains at least most recent location
+    const location = deviceLocations.location[0];
+
+    // Locations are assumed to be in timestamped order
+    var path = [];
+    deviceLocations.location.forEach(p => {
+      console.log(p);
+      path.push([p.latitude, p.longitude]);
+    });
+
+    return (
+      <div>
+        <Marker key={location.id} position={[location.latitude, location.longitude]}>
+          <Popup>
+            { deviceLocations.name }
+            <br/>
+            { new Date(location.timestamp).toLocaleString() }
+          </Popup>
+        </Marker>
+        <Polyline positions={path}/>
+      </div>
+    )
+  }
+
+  renderLiveOverlay() {
     // TODO: Use custom markers (Disabled, coloured to diff, etc.)
     if (this.props.liveLocations) {
       return (
         <div>
           { 
-            this.props.liveLocations.map(device => (
-              device.location.map(location => (
-                // TODO: Draw route through locations instead of markers (when length > 1)
-                <Marker key={location.id} position={[location.latitude, location.longitude]}>
-                  <Popup>
-                    { device.name }
-                    <br/>
-                    { new Date(location.timestamp).toLocaleString() }
-                  </Popup>
-                </Marker>
-              ))
+            this.props.liveLocations.map(deviceLocations => (
+              this.renderLiveLocation(deviceLocations)
             ))
           }
         </div>
@@ -62,7 +80,7 @@ class RoadMap extends Component {
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'
         />
-      { this.renderMarkers() }
+      { this.renderLiveOverlay() }
       </Map>
     );
   }
