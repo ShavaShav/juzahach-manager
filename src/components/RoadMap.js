@@ -13,9 +13,18 @@ class RoadMap extends Component {
   constructor(props) {
     super(props);
     this.updateLiveLocations = this.updateLiveLocations.bind(this);
-    this.renderLiveOverlay = this.renderLiveOverlay.bind(this);
+    this.renderLiveLocations = this.renderLiveLocations.bind(this);
     this.renderLiveLocation = this.renderLiveLocation.bind(this);
+    this.handleZoom = this.handleZoom.bind(this);
+
+    this.state = {
+      zoom: 16 
+    }
   } 
+
+  handleZoom(e) {
+    this.setState({zoom: e.target.getZoom()});
+  }
 
   componentDidMount() {
     // Fetch the latest locations every 5 seconds
@@ -24,12 +33,16 @@ class RoadMap extends Component {
   }
 
   updateLiveLocations() {
-    if (this.props.deviceList && this.props.deviceList.length > 0) {
-      this.props.fetchLiveLocations(10); // latest for each device
-    }
+    // TODO: let user set trail length via pagination
+    this.props.fetchLiveLocations(10); // latest for each device
   }
 
   renderLiveLocation(deviceLocations) {
+    let opacity = 1;
+    if (this.props.currentDevice && 
+      deviceLocations.id !== this.props.currentDevice.id) {
+        opacity = 0.5; // dim non-selected device
+    }
 
     // Device *always* contains at least most recent location
     const location = deviceLocations.location[0];
@@ -37,26 +50,28 @@ class RoadMap extends Component {
     // Locations are assumed to be in timestamped order
     var path = [];
     deviceLocations.location.forEach(p => {
-      console.log(p);
       path.push([p.latitude, p.longitude]);
     });
 
     return (
-      <div>
-        <Marker key={location.id} position={[location.latitude, location.longitude]}>
+      <div key={location.id}>
+        <Marker opacity={opacity} position={[location.latitude, location.longitude]}>
           <Popup>
             { deviceLocations.name }
             <br/>
             { new Date(location.timestamp).toLocaleString() }
           </Popup>
         </Marker>
-        <Polyline positions={path}/>
+        <Polyline positions={path} opacity={opacity}>
+          <Popup>
+              { deviceLocations.name }
+          </Popup>
+        </Polyline>
       </div>
     )
   }
 
-  renderLiveOverlay() {
-    // TODO: Use custom markers (Disabled, coloured to diff, etc.)
+  renderLiveLocations() {
     if (this.props.liveLocations) {
       return (
         <div>
@@ -73,14 +88,24 @@ class RoadMap extends Component {
   }
 
   render() {
-    const uWindsor = [42.304, -83.066];
+    let focus = [42.304, -83.066];
+    if (this.props.liveLocations && this.props.currentDevice) {
+      // refocus the map on currently selected device's position
+      const currLoc = this.props.liveLocations.find(deviceLocation => {
+        return deviceLocation.id === this.props.currentDevice.id
+      });
+      const lat = currLoc.location[0].latitude;
+      const long = currLoc.location[0].longitude;
+      focus = [lat, long];
+    }
+
     return (
-      <Map style={{height: '85vh'}} center={uWindsor} zoom={16}>
+      <Map style={{height: '85vh'}} center={focus} zoom={this.state.zoom} onZoom={this.handleZoom}>
         <TileLayer
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'
         />
-      { this.renderLiveOverlay() }
+      { this.renderLiveLocations() }
       </Map>
     );
   }
@@ -88,6 +113,7 @@ class RoadMap extends Component {
 
 const mapStateToProps = state => {
   return {
+    currentDevice: state.currentDevice,
     deviceList: state.deviceList,
     liveLocations: state.liveLocations
   }
