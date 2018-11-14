@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
 import { Grid, Navbar, Nav, NavItem, Col, Row, 
   ButtonToolbar, ToggleButton, ToggleButtonGroup, Well } from 'react-bootstrap';
-import Slider from 'rc-slider/lib/Slider';
 import { connect } from 'react-redux';
 import { logout, setMode, setLiveTrailLength, setLiveUpdateSpeed } from '../actions';
 import DeviceList from './DeviceList';
-import RoadMap from './RoadMap';
-
-import 'rc-slider/assets/index.css';
-import 'rc-tooltip/assets/bootstrap.css';
+import LiveMap from './LiveMap';
+import LivePanel from './LivePanel';
+import HistoryMap from './HistoryMap';
+import HistoryPanel from './HistoryPanel';
 
 class Main extends Component {
 
@@ -33,7 +32,7 @@ class Main extends Component {
         this.props.setMode(Main.LIVE);
         break;
       case Main.HISTORY:
-        //this.props.setMode(Main.HISTORY); TODO
+        this.props.setMode(Main.HISTORY); 
         break;
       default:
       // undefined
@@ -90,31 +89,26 @@ class Main extends Component {
                 <ButtonToolbar>
                   <ToggleButtonGroup type="radio" name="mode" 
                     value={this.props.mode}
-                    onChange={this.handleModeChange}>
-                    <ToggleButton value={Main.LIVE}>Live</ToggleButton>
-                    <ToggleButton value={Main.HISTORY}>History</ToggleButton>
+                    onChange={this.handleModeChange}
+                    style={{width: '100%'}}>
+                    <ToggleButton style={{width: '50%'}} value={Main.LIVE}>Live</ToggleButton>
+                    <ToggleButton style={{width: '50%'}} value={Main.HISTORY}>History</ToggleButton>
                   </ToggleButtonGroup>
                 </ButtonToolbar>
-                <h4>Updating {this.props.liveMap.updatesPerMin} times per minute</h4>
-                <Slider
-                  value={this.props.liveMap.updatesPerMin}
-                  onChange={this.handleUpdateSpeedChange}
-                  max={30}
-                  min={0}
-                  />
-                <h4>Following last {this.props.liveMap.trailLength} known locations</h4>
-                <Slider
-                  value={this.props.liveMap.trailLength}
-                  onChange={this.handleTrailLengthChange}
-                  max={100}
-                  min={1}
-                  />
-                <h3>Reports</h3>
+                {
+                  this.props.mode === Main.LIVE ? <LivePanel/> :
+                  this.props.mode === Main.HISTORY ? <HistoryPanel/> :
+                  <p>Undefined state! :o</p>
+                }
               </Row>
             </Col>
             <Col xs={12} md={9}>
               <Well>
-                <RoadMap/>
+                {
+                  this.props.mode === Main.LIVE ? <LiveMap/> :
+                  this.props.mode === Main.HISTORY ? <HistoryMap/> :
+                  <p>Undefined state! :o</p>
+                }
               </Well>
             </Col>    
         </Grid>

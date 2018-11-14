@@ -4,11 +4,7 @@ import { connect } from 'react-redux';
 
 import { fetchLiveLocations } from '../actions';
 
-class RoadMap extends Component {
-
-  // TODO: Add options to get historical (start and end times)
-  // location data via time ranger. We're already set up
-  // to render multiple markers for a device
+class LiveMap extends Component {
 
   constructor(props) {
     super(props);
@@ -141,4 +137,4 @@ const mapDispatchToProps = {
   fetchLiveLocations
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(RoadMap);
+export default connect(mapStateToProps, mapDispatchToProps)(LiveMap);
