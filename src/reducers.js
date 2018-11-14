@@ -10,8 +10,10 @@ import {
   EDIT_DEVICE,
   SET_CURRENT_DEVICE,
   FETCH_LOCATION_LIST,
+  SET_MODE,
   FETCH_LIVE_LOCATION_LIST,
-  SET_MODE
+  SET_LIVE_TRAIL_LENGTH,
+  SET_LIVE_UPDATE_SPEED
 } from './actions'
 
 /**
@@ -71,10 +73,23 @@ function currentLocations(state = null, action) {
   }
 }
 
-function liveLocations(state = null, action) {
+function liveMap(state = {trailLength: 3, updatesPerMin: 10}, action) {
   switch (action.type) {
     case `${FETCH_LIVE_LOCATION_LIST}_FULFILLED`:
-      return action.payload.body.deviceLocations;
+      return {
+        ...state,
+        locations: action.payload.body.deviceLocations
+      };
+    case SET_LIVE_TRAIL_LENGTH:
+      return {
+        ...state,
+        trailLength: action.trailLength
+      };
+    case SET_LIVE_UPDATE_SPEED:
+      return {
+        ...state,
+        updatesPerMin: action.updatesPerMin
+      };
     default:
       return state
   }
@@ -108,6 +123,6 @@ export default combineReducers({
   currentDevice,
   currentUser,
   currentLocations,
-  liveLocations,
+  liveMap,
   mode
 })

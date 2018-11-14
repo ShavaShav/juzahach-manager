@@ -17,8 +17,11 @@ class RoadMap extends Component {
     this.renderLiveLocation = this.renderLiveLocation.bind(this);
     this.handleZoom = this.handleZoom.bind(this);
 
+    this.fetchTimer = undefined;
+
     this.state = {
-      zoom: 16 
+      zoom: 16,
+      fetchTime: new Date() 
     }
   } 
 
@@ -27,14 +30,29 @@ class RoadMap extends Component {
   }
 
   componentDidMount() {
-    // Fetch the latest locations every 5 seconds
-    this.updateLiveLocations();
-    setInterval(this.updateLiveLocations, 5000);
+    this.props.fetchLiveLocations(this.props.liveMap.trailLength); // get the latest location
+
+    // Fetch the live locations according to update speed and trail length
+    this.fetchTimer = setInterval(this.updateLiveLocations, 60000 / this.props.liveMap.updatesPerMin);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    // Changing the fetch inteval, stop the timer
+    if (nextProps.liveMap.updatesPerMin !== this.props.liveMap.updatesPerMin) {
+      clearInterval(this.fetchTimer);
+      this.fetchTimer = setInterval(this.updateLiveLocations, 60000 / this.props.liveMap.updatesPerMin);
+    }
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.fetchTimer);
   }
 
   updateLiveLocations() {
+    const startTime = new Date(); 
+    startTime.setMinutes(startTime.getMinutes() - 30);
     // TODO: let user set trail length via pagination
-    this.props.fetchLiveLocations(10); // latest for each device
+    this.props.fetchLiveLocations(this.props.liveMap.trailLength); // latest for each device
   }
 
   renderLiveLocation(deviceLocations) {
@@ -72,11 +90,11 @@ class RoadMap extends Component {
   }
 
   renderLiveLocations() {
-    if (this.props.liveLocations) {
+    if (this.props.liveMap.locations) {
       return (
         <div>
           { 
-            this.props.liveLocations.map(deviceLocations => (
+            this.props.liveMap.locations.map(deviceLocations => (
               this.renderLiveLocation(deviceLocations)
             ))
           }
@@ -89,9 +107,9 @@ class RoadMap extends Component {
 
   render() {
     let focus = [42.304, -83.066];
-    if (this.props.liveLocations && this.props.currentDevice) {
+    if (this.props.liveMap.locations && this.props.currentDevice) {
       // refocus the map on currently selected device's position
-      const currLoc = this.props.liveLocations.find(deviceLocation => {
+      const currLoc = this.props.liveMap.locations.find(deviceLocation => {
         return deviceLocation.id === this.props.currentDevice.id
       });
       const lat = currLoc.location[0].latitude;
@@ -115,7 +133,7 @@ const mapStateToProps = state => {
   return {
     currentDevice: state.currentDevice,
     deviceList: state.deviceList,
-    liveLocations: state.liveLocations
+    liveMap: state.liveMap
   }
 };
 

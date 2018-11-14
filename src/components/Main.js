@@ -1,10 +1,14 @@
 import React, { Component } from 'react';
 import { Grid, Navbar, Nav, NavItem, Col, Row, 
   ButtonToolbar, ToggleButton, ToggleButtonGroup, Well } from 'react-bootstrap';
+import Slider from 'rc-slider/lib/Slider';
 import { connect } from 'react-redux';
-import { logout, setMode } from '../actions';
+import { logout, setMode, setLiveTrailLength, setLiveUpdateSpeed } from '../actions';
 import DeviceList from './DeviceList';
 import RoadMap from './RoadMap';
+
+import 'rc-slider/assets/index.css';
+import 'rc-tooltip/assets/bootstrap.css';
 
 class Main extends Component {
 
@@ -19,6 +23,8 @@ class Main extends Component {
     super(props);
     this.handleNavClick = this.handleNavClick.bind(this);
     this.handleModeChange = this.handleModeChange.bind(this);
+    this.handleUpdateSpeedChange = this.handleUpdateSpeedChange.bind(this);
+    this.handleTrailLengthChange = this.handleTrailLengthChange.bind(this);
   }
 
   handleModeChange(event) {
@@ -42,6 +48,14 @@ class Main extends Component {
       default:
         // undefined
     }
+  }
+
+  handleUpdateSpeedChange(updatesPerMin) {
+    this.props.setLiveUpdateSpeed(updatesPerMin);
+  }
+
+  handleTrailLengthChange(trailMins) {
+    this.props.setLiveTrailLength(trailMins);
   }
 
   render() {
@@ -81,6 +95,21 @@ class Main extends Component {
                     <ToggleButton value={Main.HISTORY}>History</ToggleButton>
                   </ToggleButtonGroup>
                 </ButtonToolbar>
+                <h4>Updating {this.props.liveMap.updatesPerMin} times per minute</h4>
+                <Slider
+                  value={this.props.liveMap.updatesPerMin}
+                  onChange={this.handleUpdateSpeedChange}
+                  max={30}
+                  min={0}
+                  />
+                <h4>Following last {this.props.liveMap.trailLength} known locations</h4>
+                <Slider
+                  value={this.props.liveMap.trailLength}
+                  onChange={this.handleTrailLengthChange}
+                  max={100}
+                  min={1}
+                  />
+                <h3>Reports</h3>
               </Row>
             </Col>
             <Col xs={12} md={9}>
@@ -96,13 +125,14 @@ class Main extends Component {
 
 const mapStateToProps = state => {
   return {
+    liveMap: state.liveMap,
     currentUser: state.currentUser,
     mode: state.mode
   }
 };
 
 const mapDispatchToProps = {
-  logout, setMode
+  logout, setMode, setLiveTrailLength, setLiveUpdateSpeed
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Main);

@@ -25,6 +25,8 @@ export const FETCH_LOCATION_LIST = 'FETCH_LOCATION_LIST';
 export const FETCH_LIVE_LOCATION_LIST = 'FETCH_LIVE_LOCATION_LIST';
 
 export const SET_MODE = 'SET_MODE';
+export const SET_LIVE_UPDATE_SPEED = 'SET_LIVE_UPDATE_SPEED';
+export const SET_LIVE_TRAIL_LENGTH = 'SET_LIVE_TRAIL_LENGTH';
 
 /*
  * Synchronous Action Creators
@@ -49,6 +51,20 @@ export function setMode(mode) {
   return {
     type: SET_MODE,
     mode: mode
+  }
+}
+
+export function setLiveUpdateSpeed(updatesPerMin) {
+  return {
+    type: SET_LIVE_UPDATE_SPEED,
+    updatesPerMin: updatesPerMin
+  }
+}
+
+export function setLiveTrailLength(trailLength) {
+  return {
+    type: SET_LIVE_TRAIL_LENGTH,
+    trailLength: trailLength
   }
 }
 
