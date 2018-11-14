@@ -17,10 +17,17 @@ class DeviceList extends Component {
   }
 
   renderDeviceList() {
+    const currentDeviceId = this.props.currentDevice ? this.props.currentDevice.id : -1;
+    console.log(currentDeviceId);
     return (
       <ListGroup>
         { this.props.deviceList.map(device => (
-          <ListGroupItem className="clearfix" key={device.id} onClick={this.handleClick(device)}>
+          <ListGroupItem 
+            bsStyle={currentDeviceId===device.id?"info":""} // highlight selected
+            className="clearfix" 
+            key={device.id} 
+            onClick={this.handleClick(device)}
+            >
             {device.name}
             <EditDevice className="pull-right" device={device} />
           </ListGroupItem>
@@ -50,7 +57,8 @@ class DeviceList extends Component {
 
 const mapStateToProps = state => {
   return {
-    deviceList: state.deviceList || []
+    deviceList: state.deviceList || [],
+    currentDevice: state.currentDevice
   }
 };
 
