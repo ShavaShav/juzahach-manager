@@ -91,7 +91,8 @@ class LiveMap extends Component {
         <div>
           { 
             this.props.liveMap.locations.map(deviceLocations => (
-              this.renderLiveLocation(deviceLocations)
+              deviceLocations.location.length > 0 ?
+                this.renderLiveLocation(deviceLocations) : undefined
             ))
           }
         </div>
@@ -108,9 +109,13 @@ class LiveMap extends Component {
       const currLoc = this.props.liveMap.locations.find(deviceLocation => {
         return deviceLocation.id === this.props.currentDevice.id
       });
-      const lat = currLoc.location[0].latitude;
-      const long = currLoc.location[0].longitude;
-      focus = [lat, long];
+
+      // If selected device contains location data
+      if (currLoc.location.length > 0) {
+        const lat = currLoc.location[0].latitude;
+        const long = currLoc.location[0].longitude;
+        focus = [lat, long];
+      }
     }
 
     return (
