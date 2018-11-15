@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Modal, Well } from 'react-bootstrap';
 import { connect } from 'react-redux';
+import Download from '@axetroy/react-download';
 
 import { registerDevice } from '../actions';
 
@@ -68,8 +69,19 @@ class AddDevice extends Component {
             { this.renderModalBody() }
           </Modal.Body>
           <Modal.Footer>
-            <Button onClick={this.props.registerDevice}>New Access Code</Button>
-            <Button onClick={this.handleClose}>Close</Button>
+            <table style={{width:'100%'}}>
+              <tr style={{display: 'block'}}>
+                <td style={{float: 'left'}}>
+                  <Download file="edge-android.apk">
+                    <Button bsStyle='success'>Download Android</Button>
+                  </Download>  
+                </td>
+                <td style={{float: 'right'}}>
+                  <Button bsStyle='primary' onClick={this.props.registerDevice}>New Access Code</Button>
+                  <Button onClick={this.handleClose}>Close</Button>
+                </td>
+              </tr>
+            </table>
           </Modal.Footer>
         </Modal>
       </div>
