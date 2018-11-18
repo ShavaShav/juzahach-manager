@@ -97,8 +97,8 @@ const Device = {
       // pagination requested
       let args = [];
       if (limit) args.push('limit=' + limit);
-      if (startTime) args.push('start=' + startTime);
-      if (endTime) args.push('end=' + endTime);
+      if (startTime) args.push('start=' + new Date(startTime).toISOString());
+      if (endTime) args.push('end=' + new Date(endTime).toISOString());
       endpont += '?' + args.join('&');
     }
     return requests.get(endpont);

@@ -9,11 +9,13 @@ import {
   FETCH_DEVICE,
   EDIT_DEVICE,
   SET_CURRENT_DEVICE,
-  FETCH_LOCATION_LIST,
+  FETCH_USER_LOCATION_LIST,
+  FETCH_DEVICE_LOCATION_LIST,
   SET_MODE,
-  FETCH_LIVE_LOCATION_LIST,
   SET_LIVE_TRAIL_LENGTH,
-  SET_LIVE_UPDATE_SPEED
+  SET_LIVE_UPDATE_SPEED,
+  SET_HISTORY_START,
+  SET_HISTORY_END
 } from './actions'
 
 /**
@@ -64,18 +66,9 @@ function currentDevice(state = null, action) {
   }
 }
 
-function currentLocations(state = null, action) {
-  switch (action.type) {
-    case `${FETCH_LOCATION_LIST}_FULFILLED`:
-      return action.payload.body.locations;
-    default:
-      return state
-  }
-}
-
 function liveMap(state = {trailLength: 3, updatesPerMin: 10}, action) {
   switch (action.type) {
-    case `${FETCH_LIVE_LOCATION_LIST}_FULFILLED`:
+    case `${FETCH_USER_LOCATION_LIST}_FULFILLED`:
       return {
         ...state,
         locations: action.payload.body.deviceLocations
@@ -89,6 +82,28 @@ function liveMap(state = {trailLength: 3, updatesPerMin: 10}, action) {
       return {
         ...state,
         updatesPerMin: action.updatesPerMin
+      };
+    default:
+      return state
+  }
+}
+
+function historyMap(state = {}, action) {
+  switch (action.type) {
+    case `${FETCH_DEVICE_LOCATION_LIST}_FULFILLED`:
+      return {
+        ...state,
+        locations: action.payload.body.locations
+      };
+    case SET_HISTORY_START:
+      return {
+        ...state,
+        start: action.time
+      };
+    case SET_HISTORY_END:
+      return {
+        ...state,
+        end: action.time
       };
     default:
       return state
@@ -122,7 +137,7 @@ export default combineReducers({
   deviceList,
   currentDevice,
   currentUser,
-  currentLocations,
   liveMap,
+  historyMap,
   mode
 })

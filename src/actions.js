@@ -21,12 +21,14 @@ export const FETCH_DEVICE = 'FETCH_DEVICE';
 export const FETCH_DEVICE_LIST = 'FETCH_DEVICE_LIST';
 export const SET_CURRENT_DEVICE = 'SET_CURRENT_DEVICE';
 
-export const FETCH_LOCATION_LIST = 'FETCH_LOCATION_LIST';
-export const FETCH_LIVE_LOCATION_LIST = 'FETCH_LIVE_LOCATION_LIST';
+export const FETCH_DEVICE_LOCATION_LIST = 'FETCH_DEVICE_LOCATION_LIST';
+export const FETCH_USER_LOCATION_LIST = 'FETCH_USER_LOCATION_LIST';
 
 export const SET_MODE = 'SET_MODE';
 export const SET_LIVE_UPDATE_SPEED = 'SET_LIVE_UPDATE_SPEED';
 export const SET_LIVE_TRAIL_LENGTH = 'SET_LIVE_TRAIL_LENGTH';
+export const SET_HISTORY_START = 'SET_HISTORY_START';
+export const SET_HISTORY_END = 'SET_HISTORY_END';
 
 /*
  * Synchronous Action Creators
@@ -65,6 +67,20 @@ export function setLiveTrailLength(trailLength) {
   return {
     type: SET_LIVE_TRAIL_LENGTH,
     trailLength: trailLength
+  }
+}
+
+export function setHistoryStart(time) {
+  return {
+    type: SET_HISTORY_START,
+    time: time
+  }
+}
+
+export function setHistoryEnd(time) {
+  return {
+    type: SET_HISTORY_END,
+    time: time
   }
 }
 
@@ -141,11 +157,11 @@ export function editDevice(id, changes) {
   }
 }
 
-export function fetchLocations(deviceId, limit, start, end) {
+export function fetchLocationHistory(deviceId, start, end) {
   return dispatch => {
     dispatch({ 
-      type: FETCH_LOCATION_LIST,
-      payload: api.Device.locations(deviceId, limit, start, end)
+      type: FETCH_DEVICE_LOCATION_LIST,
+      payload: api.Device.locations(deviceId, undefined, start, end)
     });
   }
 }
@@ -153,7 +169,7 @@ export function fetchLocations(deviceId, limit, start, end) {
 export function fetchLiveLocations(limit, start, end) {
   return dispatch => {
     dispatch({ 
-      type: FETCH_LIVE_LOCATION_LIST,
+      type: FETCH_USER_LOCATION_LIST,
       payload: api.User.locations(limit, start, end)
     });
   }
