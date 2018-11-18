@@ -26,17 +26,17 @@ class LiveMap extends Component {
   }
 
   componentDidMount() {
-    this.props.fetchLiveLocations(this.props.liveMap.trailLength); // get the latest location
+    this.props.fetchLiveLocations(this.props.live.trailLength); // get the latest location
 
     // Fetch the live locations according to update speed and trail length
-    this.fetchTimer = setInterval(this.updateLiveLocations, 60000 / this.props.liveMap.updatesPerMin);
+    this.fetchTimer = setInterval(this.updateLiveLocations, 60000 / this.props.live.updatesPerMin);
   }
 
   componentWillReceiveProps(nextProps) {
     // Changing the fetch inteval, stop the timer
-    if (nextProps.liveMap.updatesPerMin !== this.props.liveMap.updatesPerMin) {
+    if (nextProps.live.updatesPerMin !== this.props.live.updatesPerMin) {
       clearInterval(this.fetchTimer);
-      this.fetchTimer = setInterval(this.updateLiveLocations, 60000 / this.props.liveMap.updatesPerMin);
+      this.fetchTimer = setInterval(this.updateLiveLocations, 60000 / this.props.live.updatesPerMin);
     }
   }
 
@@ -48,7 +48,7 @@ class LiveMap extends Component {
     const startTime = new Date(); 
     startTime.setMinutes(startTime.getMinutes() - 30);
     // TODO: let user set trail length via pagination
-    this.props.fetchLiveLocations(this.props.liveMap.trailLength); // latest for each device
+    this.props.fetchLiveLocations(this.props.live.trailLength); // latest for each device
   }
 
   renderLiveLocation(deviceLocations) {
@@ -86,11 +86,11 @@ class LiveMap extends Component {
   }
 
   renderLiveLocations() {
-    if (this.props.liveMap.locations) {
+    if (this.props.live.locations) {
       return (
         <div>
           { 
-            this.props.liveMap.locations.map(deviceLocations => (
+            this.props.live.locations.map(deviceLocations => (
               deviceLocations.location.length > 0 ?
                 this.renderLiveLocation(deviceLocations) : undefined
             ))
@@ -104,9 +104,9 @@ class LiveMap extends Component {
 
   render() {
     let focus = [42.304, -83.066];
-    if (this.props.liveMap.locations && this.props.currentDevice) {
+    if (this.props.live.locations && this.props.currentDevice) {
       // refocus the map on currently selected device's position
-      const currLoc = this.props.liveMap.locations.find(deviceLocation => {
+      const currLoc = this.props.live.locations.find(deviceLocation => {
         return deviceLocation.id === this.props.currentDevice.id
       });
 
@@ -134,7 +134,7 @@ const mapStateToProps = state => {
   return {
     currentDevice: state.currentDevice,
     deviceList: state.deviceList,
-    liveMap: state.liveMap
+    live: state.live
   }
 };
 

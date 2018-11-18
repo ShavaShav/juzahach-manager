@@ -66,7 +66,7 @@ function currentDevice(state = null, action) {
   }
 }
 
-function liveMap(state = {trailLength: 3, updatesPerMin: 10}, action) {
+function live(state = {trailLength: 3, updatesPerMin: 10}, action) {
   switch (action.type) {
     case `${FETCH_USER_LOCATION_LIST}_FULFILLED`:
       return {
@@ -88,7 +88,7 @@ function liveMap(state = {trailLength: 3, updatesPerMin: 10}, action) {
   }
 }
 
-function historyMap(state = {}, action) {
+function history(state = {}, action) {
   switch (action.type) {
     case `${FETCH_DEVICE_LOCATION_LIST}_FULFILLED`:
       return {
@@ -137,7 +137,7 @@ export default combineReducers({
   deviceList,
   currentDevice,
   currentUser,
-  liveMap,
-  historyMap,
+  live,
+  history,
   mode
 })

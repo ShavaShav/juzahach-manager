@@ -33,7 +33,7 @@ class HistoryMap extends Component {
   }
 
   renderHistoricalPath() {
-    const locations =  this.props.historyMap.locations;
+    const locations =  this.props.history.locations;
     if (locations && locations.length > 0) {
       const endLocation = locations[0];
       const startLocation = locations[locations.length-1];
@@ -60,6 +60,12 @@ class HistoryMap extends Component {
 
   render() {
     let focus = [42.304, -83.066];
+    if (this.props.history.locations && this.props.history.locations.length > 0) {
+      // refocus the map on latest position
+      const lat = this.props.history.locations[0].latitude;
+      const long = this.props.history.locations[0].longitude;
+      focus = [lat, long];
+    }
 
     return (
       <Map style={{height: '85vh'}} center={focus} zoom={this.state.zoom} onZoom={this.handleZoom}>
@@ -75,7 +81,7 @@ class HistoryMap extends Component {
 
 const mapStateToProps = state => {
   return {
-    historyMap: state.historyMap,
+    history: state.history,
     currentDevice: state.currentDevice
   }
 };

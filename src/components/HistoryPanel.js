@@ -13,7 +13,7 @@ class HistoryPanel extends Component {
 
   componentWillMount() {
     // Set initial history state
-    if (!this.props.historyMap.start || !this.props.historyMap.end) {
+    if (!this.props.history.start || !this.props.history.end) {
       const today = new Date();
       const yesterday = new Date();
       yesterday.setDate(today.getDate() - 1);
@@ -28,7 +28,7 @@ class HistoryPanel extends Component {
       // If current device changed, grab the history for it
       if (nextProps.currentDevice.id !== this.props.currentDevice.id) {
         this.props.fetchLocationHistory(nextProps.currentDevice.id, 
-          this.props.historyMap.start, this.props.historyMap.end);      
+          this.props.history.start, this.props.history.end);      
       }
     }
   }
@@ -37,18 +37,18 @@ class HistoryPanel extends Component {
     // Update global state and fetch new locations
     this.props.setHistoryStart(time);
     this.props.fetchLocationHistory(this.props.currentDevice.id, 
-      this.props.historyMap.start, this.props.historyMap.end);
+      this.props.history.start, this.props.history.end);
   }
 
   onEndTimeChange(time) {
     // Update global state and fetch new locations
     this.props.setHistoryEnd(time);
     this.props.fetchLocationHistory(this.props.currentDevice.id, 
-      this.props.historyMap.start, this.props.historyMap.end);
+      this.props.history.start, this.props.history.end);
   }
 
   render() {
-    if (this.props.currentDevice && this.props.historyMap) {
+    if (this.props.currentDevice && this.props.history) {
       return (
         <table>
           <tr>
@@ -56,14 +56,14 @@ class HistoryPanel extends Component {
               <h5>Start Time</h5>
               <DateTimePicker
                 onChange={this.onStartTimeChange}
-                value={this.props.historyMap.start}
+                value={this.props.history.start}
               />
             </td>
             <td style={{paddingLeft: '10px'}}>
               <h5>End Time</h5>
               <DateTimePicker
                 onChange={this.onEndTimeChange}
-                value={this.props.historyMap.end}
+                value={this.props.history.end}
               />
             </td>
           </tr>
@@ -77,7 +77,7 @@ class HistoryPanel extends Component {
 
 const mapStateToProps = state => {
   return {
-    historyMap: state.historyMap,
+    history: state.history,
     currentDevice: state.currentDevice
   }
 };
