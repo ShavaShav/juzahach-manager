@@ -25,21 +25,20 @@ class LivePanel extends Component {
   render() {
     return (
       <div>
-        <h4>Updating {this.props.liveMap.updatesPerMin} times per minute</h4>
+        <h5>Updating {this.props.live.updatesPerMin} times per minute</h5>
         <Slider
-          value={this.props.liveMap.updatesPerMin}
+          value={this.props.live.updatesPerMin}
           onChange={this.handleUpdateSpeedChange}
           max={30}
           min={0}
         />
-        <h4>Following last {this.props.liveMap.trailLength} known locations</h4>
+        <h5>Following last {this.props.live.trailLength} known locations</h5>
         <Slider
-          value={this.props.liveMap.trailLength}
+          value={this.props.live.trailLength}
           onChange={this.handleTrailLengthChange}
           max={100}
           min={1}
         />
-        <h3>Reports</h3>
       </div>
     );
   }
@@ -47,7 +46,7 @@ class LivePanel extends Component {
 
 const mapStateToProps = state => {
   return {
-    liveMap: state.liveMap
+    live: state.live
   }
 };
 
