@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import { connect } from 'react-redux';
 import { Map, TileLayer, Marker, Popup, Polyline } from 'react-leaflet'
+import L from 'leaflet';
 
 class HistoryMap extends Component {
 
@@ -9,7 +10,10 @@ class HistoryMap extends Component {
 
     this.handleZoom = this.handleZoom.bind(this);
     this.renderMarker = this.renderMarker.bind(this);
+    this.renderMidMarkers = this.renderMidMarkers.bind(this);
     this.renderHistoricalPath = this.renderHistoricalPath.bind(this);
+
+    this.midIcon = L.icon({ iconUrl: require('../assets/marker.png') });
 
     this.state = {
       zoom: 16
@@ -32,13 +36,31 @@ class HistoryMap extends Component {
     )
   }
 
+  renderMidMarkers(locations) {
+    if (this.state.zoom > 17) {
+      const midLocations = locations.slice(1, locations.length-1);
+      return (
+        midLocations.map(location => (
+          <Marker key={location.id} icon={this.midIcon} position={[location.latitude, location.longitude]}>
+            <Popup>
+              { new Date(location.timestamp).toLocaleString() }
+            </Popup>
+          </Marker>
+        ))
+      )
+    } else {
+      return undefined;
+    }
+  }
+
   renderHistoricalPath() {
-    const locations =  this.props.history.locations;
+    const locations = this.props.history.locations;
     if (locations && locations.length > 0) {
       const endLocation = locations[0];
       const startLocation = locations[locations.length-1];
 
-      // Locations are assumed to be in timestamped order
+
+      // Draw path, assumed to be in timestamped order
       var path = [];
       locations.forEach(p => {
         path.push([p.latitude, p.longitude]);
@@ -51,6 +73,7 @@ class HistoryMap extends Component {
           <Polyline positions={path}>
             <Popup> { this.props.currentDevice.name } </Popup>
           </Polyline>
+          { this.renderMidMarkers(locations) }
         </div>
       )
     } else {
@@ -66,7 +89,7 @@ class HistoryMap extends Component {
       const long = this.props.history.locations[0].longitude;
       focus = [lat, long];
     }
-
+    console.log(this.state.zoom);
     return (
       <Map style={{height: '85vh'}} center={focus} zoom={this.state.zoom} onZoom={this.handleZoom}>
         <TileLayer

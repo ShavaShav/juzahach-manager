@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import { Map, Marker, Popup, TileLayer, Polyline } from 'react-leaflet'
 import { connect } from 'react-redux';
-
+import L from 'leaflet';
 import { fetchLiveLocations } from '../actions';
 
 class LiveMap extends Component {
@@ -12,6 +12,8 @@ class LiveMap extends Component {
     this.renderLiveLocations = this.renderLiveLocations.bind(this);
     this.renderLiveLocation = this.renderLiveLocation.bind(this);
     this.handleZoom = this.handleZoom.bind(this);
+
+    this.midIcon = L.icon({ iconUrl: require('../assets/marker.png') });
 
     this.fetchTimer = undefined;
 
@@ -49,6 +51,23 @@ class LiveMap extends Component {
     startTime.setMinutes(startTime.getMinutes() - 30);
     // TODO: let user set trail length via pagination
     this.props.fetchLiveLocations(this.props.live.trailLength); // latest for each device
+  }
+
+  renderMidMarkers(locations) {
+    if (this.state.zoom > 17) {
+      const midLocations = locations.slice(1); // all location except most recent
+      return (
+        midLocations.map(location => (
+          <Marker key={location.id} icon={this.midIcon} position={[location.latitude, location.longitude]}>
+            <Popup>
+              { new Date(location.timestamp).toLocaleString() }
+            </Popup>
+          </Marker>
+        ))
+      )
+    } else {
+      return undefined;
+    }
   }
 
   renderLiveLocation(deviceLocations) {
@@ -93,6 +112,12 @@ class LiveMap extends Component {
             this.props.live.locations.map(deviceLocations => (
               deviceLocations.location.length > 0 ?
                 this.renderLiveLocation(deviceLocations) : undefined
+            ))
+          }
+                    { 
+            this.props.live.locations.map(deviceLocations => (
+              deviceLocations.location.length > 0 ?
+                this.renderMidMarkers(deviceLocations.location) : undefined
             ))
           }
         </div>
