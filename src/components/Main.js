@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Grid, Navbar, Nav, NavItem, Col, Row, 
+import { Grid, Navbar, Nav, NavItem, Col, Row, Panel,
   ButtonToolbar, ToggleButton, ToggleButtonGroup, Well } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { logout, setMode, setLiveTrailLength, setLiveUpdateSpeed } from '../actions';
@@ -87,7 +87,7 @@ class Main extends Component {
                 <DeviceList/>            
               </Col>
               <Col xs={12} sm={6} md={12}>
-                <ButtonToolbar>
+                <ButtonToolbar style={{marginBottom: '25px'}}>
                   <ToggleButtonGroup type="radio" name="mode" 
                     value={this.props.mode}
                     onChange={this.handleModeChange}
@@ -96,11 +96,13 @@ class Main extends Component {
                     <ToggleButton style={{width: '50%'}} value={Main.HISTORY}>History</ToggleButton>
                   </ToggleButtonGroup>
                 </ButtonToolbar>
-                {
-                  this.props.mode === Main.LIVE ? <LivePanel/> :
-                  this.props.mode === Main.HISTORY ? <HistoryPanel/> :
-                  <p>Undefined state! :o</p>
-                }
+                <Panel style={{padding: '25px'}}>
+                  {
+                    this.props.mode === Main.LIVE ? <LivePanel/> :
+                    this.props.mode === Main.HISTORY ? <HistoryPanel/> :
+                    <p>Undefined state! :o</p>
+                  }
+                </Panel>
               </Col>
             </Row>
           </Col>

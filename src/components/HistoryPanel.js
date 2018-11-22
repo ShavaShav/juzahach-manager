@@ -53,7 +53,7 @@ class HistoryPanel extends Component {
         <table>
           <tr>
             <td>
-              <h5>Start</h5>
+              <h5 style={{paddingBottom: '8px'}}>Start</h5>
               <h5>End</h5>
             </td>
             <td style={{paddingLeft: '10px'}}>
@@ -70,7 +70,7 @@ class HistoryPanel extends Component {
         </table>
       );
     } else {
-      return null;
+      return <p>Select a device to view it's history</p>;
     }
   }
 }

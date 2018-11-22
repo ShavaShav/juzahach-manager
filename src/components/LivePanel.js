@@ -32,7 +32,7 @@ class LivePanel extends Component {
           max={30}
           min={0}
         />
-        <h5>Following last {this.props.live.trailLength} known locations</h5>
+        <h5 style={{paddingTop: '10px'}}>Following last {this.props.live.trailLength} known locations</h5>
         <Slider
           value={this.props.live.trailLength}
           onChange={this.handleTrailLengthChange}
