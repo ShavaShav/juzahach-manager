@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import DateTimePicker from 'react-datetime-picker';
+import DatetimeRangePicker from 'react-datetime-range-picker';
 import { setHistoryStart, setHistoryEnd, fetchLocationHistory } from '../actions';
 
 class HistoryPanel extends Component {
@@ -53,19 +53,17 @@ class HistoryPanel extends Component {
         <table>
           <tr>
             <td>
-              <h5>Start Time</h5>
-              <DateTimePicker
-                locale='en-US'
-                onChange={this.onStartTimeChange}
-                value={this.props.history.start}
-              />
+              <h5>Start</h5>
+              <h5>End</h5>
             </td>
             <td style={{paddingLeft: '10px'}}>
-              <h5>End Time</h5>
-              <DateTimePicker
+              <DatetimeRangePicker
                 locale='en-US'
-                onChange={this.onEndTimeChange}
-                value={this.props.history.end}
+                inline={true}
+                onEndDateChange={this.onEndTimeChange}
+                onStartDateChange={this.onStartTimeChange}
+                endDate={this.props.history.end}
+                startDate={this.props.history.start}
               />
             </td>
           </tr>
