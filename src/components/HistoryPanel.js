@@ -55,6 +55,7 @@ class HistoryPanel extends Component {
             <td>
               <h5>Start Time</h5>
               <DateTimePicker
+                locale='en-US'
                 onChange={this.onStartTimeChange}
                 value={this.props.history.start}
               />
@@ -62,6 +63,7 @@ class HistoryPanel extends Component {
             <td style={{paddingLeft: '10px'}}>
               <h5>End Time</h5>
               <DateTimePicker
+                locale='en-US'
                 onChange={this.onEndTimeChange}
                 value={this.props.history.end}
               />
