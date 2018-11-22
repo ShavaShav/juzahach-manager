@@ -63,10 +63,10 @@ class Main extends Component {
         <Navbar inverse fixedTop>
           <Grid>
             <Navbar.Header>
-                <Navbar.Brand>
-                  <a href="./">Edge-Manager</a>
-                </Navbar.Brand>
-                <Navbar.Toggle />
+              <Navbar.Brand>
+                <a href="./">Edge-Manager</a>
+              </Navbar.Brand>
+              <Navbar.Toggle />
             </Navbar.Header>
             <Navbar.Collapse>
               <Nav pullRight onSelect={this.handleNavClick}>
@@ -81,11 +81,12 @@ class Main extends Component {
           </Grid>
         </Navbar>
         <Grid style={{paddingTop:'80px'}} fluid={true}>
-            <Col xs={6} md={3} style={{align: 'center'}}>
-              <Row>
-                <DeviceList/>
-              </Row>
-              <Row>
+          <Col md={3} style={{align: 'center'}}>
+            <Row>
+              <Col xs={12} sm={6} md={12}>
+                <DeviceList/>            
+              </Col>
+              <Col xs={12} sm={6} md={12}>
                 <ButtonToolbar>
                   <ToggleButtonGroup type="radio" name="mode" 
                     value={this.props.mode}
@@ -100,17 +101,18 @@ class Main extends Component {
                   this.props.mode === Main.HISTORY ? <HistoryPanel/> :
                   <p>Undefined state! :o</p>
                 }
-              </Row>
-            </Col>
-            <Col xs={12} md={9}>
-              <Well>
-                {
-                  this.props.mode === Main.LIVE ? <LiveMap/> :
-                  this.props.mode === Main.HISTORY ? <HistoryMap/> :
-                  <p>Undefined state! :o</p>
-                }
-              </Well>
-            </Col>    
+              </Col>
+            </Row>
+          </Col>
+          <Col md={9}>
+            <Well>
+              {
+                this.props.mode === Main.LIVE ? <LiveMap/> :
+                this.props.mode === Main.HISTORY ? <HistoryMap/> :
+                <p>Undefined state! :o</p>
+              }
+            </Well>
+          </Col>    
         </Grid>
       </div>
     );

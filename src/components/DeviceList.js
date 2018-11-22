@@ -45,7 +45,7 @@ class DeviceList extends Component {
           marginBottom: '25px'
         }}>
           <AddDevice/>
-          <Button style={{width: '150px'}} onClick={this.props.fetchDeviceList}>
+          <Button style={{width: '150px', marginLeft: '10px'}} onClick={this.props.fetchDeviceList}>
             <Glyphicon glyph="refresh" />
           </Button>
         </ButtonGroup>
