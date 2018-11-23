@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, ListGroup, ListGroupItem, Glyphicon, ButtonGroup } from 'react-bootstrap';
+import { Button, ListGroup, ListGroupItem, Glyphicon, ButtonGroup, Panel } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import AddDevice from './AddDevice';
 import EditDevice from './EditDevice';
@@ -8,7 +8,7 @@ import { fetchDeviceList, setCurrentDevice } from '../actions';
 
 class DeviceList extends Component {
 
-  componentDidMount() {
+  componentWillMount() {
     this.props.fetchDeviceList();
   }
 
@@ -18,9 +18,9 @@ class DeviceList extends Component {
 
   renderDeviceList() {
     const currentDeviceId = this.props.currentDevice ? this.props.currentDevice.id : -1;
-    console.log(currentDeviceId);
+
     return (
-      <ListGroup>
+      <ListGroup style={{'maxHeight': '80vh', 'overflowY': 'auto'}}>
         { this.props.deviceList.map(device => (
           <ListGroupItem 
             bsStyle={currentDeviceId===device.id?"info":""} // highlight selected
@@ -49,7 +49,9 @@ class DeviceList extends Component {
             <Glyphicon glyph="refresh" />
           </Button>
         </ButtonGroup>
-        { this.renderDeviceList() }
+        { this.props.deviceList.length > 0 ? 
+          this.renderDeviceList() :
+          <Panel style={{padding: '25px'}}>No registered devices, yet.</Panel> }
       </div>
     )
   }

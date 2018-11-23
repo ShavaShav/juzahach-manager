@@ -147,7 +147,7 @@ class LiveMap extends Component {
       <Map style={{height: '85vh'}} center={focus} zoom={this.state.zoom} onZoom={this.handleZoom}>
         <TileLayer
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-          url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'
+          url='https://{s}.tile.osm.org/{z}/{x}/{y}.png'
         />
       { this.renderLiveLocations() }
       </Map>
