@@ -37,8 +37,11 @@ class LiveMap extends Component {
   componentWillReceiveProps(nextProps) {
     // Changing the fetch inteval, stop the timer
     if (nextProps.live.updatesPerMin !== this.props.live.updatesPerMin) {
-      clearInterval(this.fetchTimer);
-      this.fetchTimer = setInterval(this.updateLiveLocations, 60000 / this.props.live.updatesPerMin);
+      clearInterval(this.fetchTimer); 
+
+      // If no updates, don't start a timer
+      if (nextProps.live.updatesPerMin > 0)
+        this.fetchTimer = setInterval(this.updateLiveLocations, 60000 / nextProps.live.updatesPerMin);
     }
   }
 
@@ -114,7 +117,7 @@ class LiveMap extends Component {
                 this.renderLiveLocation(deviceLocations) : undefined
             ))
           }
-                    { 
+          { 
             this.props.live.locations.map(deviceLocations => (
               deviceLocations.location.length > 0 ?
                 this.renderMidMarkers(deviceLocations.location) : undefined
