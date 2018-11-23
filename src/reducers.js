@@ -32,7 +32,10 @@ function currentUser(state = null, action) {
     case `${LOGIN}_FULFILLED`:
     case `${REGISTER}_FULFILLED`:
     case `${FETCH_CURRENT_USER}_FULFILLED`:
-      return action.payload.body.user;
+      // Set the local storage before setting user state
+      const user = action.payload.body.user;
+      localStorage.setItem('token', user.token);
+      return user;
     case LOGOUT:
       return null; // no user
     default:
@@ -50,6 +53,8 @@ function deviceList(state = null, action) {
       return state.map((device) => 
         device.id === receivedDevice.id ? receivedDevice : device
       );
+    case LOGOUT:
+      return null; // reinitialize state
     default:
       return state
   }
@@ -61,6 +66,8 @@ function currentDevice(state = null, action) {
       return action.device;
     case `${FETCH_DEVICE}_FULFILLED`:
       return action.payload.body.device;
+    case LOGOUT:
+      return null; // reinitialize state
     default:
       return state
   }
@@ -83,6 +90,8 @@ function live(state = {trailLength: 3, updatesPerMin: 10}, action) {
         ...state,
         updatesPerMin: action.updatesPerMin
       };
+    case LOGOUT:
+      return {trailLength: 3, updatesPerMin: 10}; // reinitialize state
     default:
       return state
   }
@@ -105,6 +114,8 @@ function history(state = {}, action) {
         ...state,
         end: action.time
       };
+    case LOGOUT:
+      return {}; // reinitialize state
     default:
       return state
   }
@@ -114,6 +125,8 @@ function mode(state = 'LIVE', action) {
   switch (action.type) {
     case SET_MODE:
       return action.mode;
+    case LOGOUT:
+      return 'LIVE'; // reinitialize state
     default:
       return state
   }
@@ -126,6 +139,7 @@ function accessCode(state = null, action) {
     case `${REGISTER_DEVICE}_FULFILLED`:
       return action.payload.body.accessCode;
     case `${REGISTER_DEVICE}_REJECTED`:
+    case LOGOUT:
       return ''; // reset access code
     default:
       return state

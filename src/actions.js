@@ -93,8 +93,6 @@ export function fetchCurrentUser() {
     dispatch({ 
       type: FETCH_CURRENT_USER,
       payload: api.User.current()
-    }).then(res => {
-      localStorage.setItem('token', res.value.body.user.token);
     });
   }
 }
@@ -104,8 +102,6 @@ export function login(email, password) {
     dispatch({ 
       type: LOGIN,
       payload: api.User.login(email, password)
-    }).then(res => {
-      localStorage.setItem('token', res.value.body.user.token);
     });
   }
 }
@@ -115,8 +111,6 @@ export function register(username, email, password) {
     dispatch({ 
       type: REGISTER,
       payload: api.User.register(username, email, password)
-    }).then(res => {
-      localStorage.setItem('token', res.value.body.user.token);
     });
   }
 }
