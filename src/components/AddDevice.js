@@ -68,20 +68,11 @@ class AddDevice extends Component {
           <Modal.Body>
             { this.renderModalBody() }
           </Modal.Body>
-          <Modal.Footer>
-            <table style={{width:'100%'}}>
-              <tr style={{display: 'block'}}>
-                <td style={{float: 'left'}}>
-                  <Download file="edge-android.apk">
-                    <Button bsStyle='success'>Download Android</Button>
-                  </Download>  
-                </td>
-                <td style={{float: 'right'}}>
-                  <Button bsStyle='primary' onClick={this.props.registerDevice}>New Access Code</Button>
-                  <Button onClick={this.handleClose}>Close</Button>
-                </td>
-              </tr>
-            </table>
+          <Modal.Footer style={{ overflow: 'auto' }}>
+            <Button style={{marginBottom: '10px', float: 'right' }} bsStyle='primary' onClick={this.props.registerDevice}>New Access Code</Button>
+            <Download style={{float: 'left' }} file="edge-android.apk">
+              <Button bsStyle='success'>Download Android</Button>
+            </Download>
           </Modal.Footer>
         </Modal>
       </div>
