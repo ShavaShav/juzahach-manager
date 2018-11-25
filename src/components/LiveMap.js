@@ -139,7 +139,7 @@ class LiveMap extends Component {
       });
 
       // If selected device contains location data
-      if (currLoc.location.length > 0) {
+      if (currLoc && currLoc.location.length > 0) {
         const lat = currLoc.location[0].latitude;
         const long = currLoc.location[0].longitude;
         focus = [lat, long];

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Button, Modal, Well } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import Download from '@axetroy/react-download';
 
 import { registerDevice } from '../actions';
 
@@ -55,6 +54,7 @@ class AddDevice extends Component {
   }
 
   render() {
+
     return (
       <div>
         <Button bsStyle="primary" onClick={this.handleShow}>
@@ -70,9 +70,9 @@ class AddDevice extends Component {
           </Modal.Body>
           <Modal.Footer style={{ overflow: 'auto' }}>
             <Button style={{marginBottom: '10px', float: 'right' }} bsStyle='primary' onClick={this.props.registerDevice}>New Access Code</Button>
-            <Download style={{float: 'left' }} file="edge-android.apk">
+            <a style={{float: 'left' }} href={process.env.REACT_APP_ANDROID_URL}>
               <Button bsStyle='success'>Download Android</Button>
-            </Download>
+            </a>
           </Modal.Footer>
         </Modal>
       </div>
