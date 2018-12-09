@@ -82,6 +82,7 @@ class LiveMap extends Component {
 
     // Device *always* contains at least most recent location
     const location = deviceLocations.location[0];
+    const liveTime = new Date(location.timestamp);
 
     // Locations are assumed to be in timestamped order
     var path = [];
@@ -89,13 +90,17 @@ class LiveMap extends Component {
       path.push([p.latitude, p.longitude]);
     });
 
+    const activeStatus = new Date() - liveTime < 60000 ?
+      (<span style={{color: 'green'}}>Active</span>) :
+      (<span style={{color: 'grey'}}>Inactive</span>)
+
     return (
       <div key={location.id}>
         <Marker opacity={opacity} position={[location.latitude, location.longitude]}>
           <Popup>
             { deviceLocations.name }
             <br/>
-            { new Date(location.timestamp).toLocaleString() }
+            { liveTime.toLocaleString() } ({ activeStatus })
           </Popup>
         </Marker>
         <Polyline positions={path} opacity={opacity}>
