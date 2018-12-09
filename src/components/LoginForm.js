@@ -31,10 +31,13 @@ class LoginForm extends Component {
   }
 
   render() {
+    const errors = this.props.currentUser ? this.props.currentUser.errors : {};
+
     return (
       <div className="Login">
         <form onSubmit={this.handleSubmit}>
-          <FormGroup controlId="email" bsSize="large">
+          <FormGroup controlId="email" bsSize="large"
+            validationState={errors && errors.email ? "error" : null}>
             <ControlLabel>Email</ControlLabel>
             <FormControl
               autoFocus
@@ -42,14 +45,17 @@ class LoginForm extends Component {
               value={this.state.email}
               onChange={this.handleChange}
             />
+            <FormControl.Feedback />
           </FormGroup>
-          <FormGroup controlId="password" bsSize="large">
+          <FormGroup controlId="password" bsSize="large"
+            validationState={errors && errors.password ? "error" : null}>
             <ControlLabel>Password</ControlLabel>
             <FormControl
               value={this.state.password}
               onChange={this.handleChange}
               type="password"
             />
+            <FormControl.Feedback />
           </FormGroup>
           <Button
             block
@@ -66,4 +72,10 @@ class LoginForm extends Component {
   }
 }
 
-export default connect(null, { login })(LoginForm);
+const mapStateToProps = state => {
+  return {
+    currentUser: state.currentUser
+  }
+};
+
+export default connect(mapStateToProps, { login })(LoginForm);

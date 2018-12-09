@@ -34,10 +34,13 @@ class RegisterForm extends Component {
   }
 
   render() {
+    const errors = this.props.currentUser ? this.props.currentUser.errors : {};
+
     return (
       <div className="Register">
         <form onSubmit={this.handleSubmit}>
-          <FormGroup controlId="username" bsSize="large">
+          <FormGroup controlId="username" bsSize="large" 
+            validationState={errors && errors.username ? "error" : null}>
             <ControlLabel>Username</ControlLabel>
             <FormControl
               autoFocus
@@ -46,7 +49,8 @@ class RegisterForm extends Component {
               onChange={this.handleChange}
             />
           </FormGroup>
-          <FormGroup controlId="email" bsSize="large">
+          <FormGroup controlId="email" bsSize="large"
+            validationState={errors && errors.email ? "error" : null}>
             <ControlLabel>Email</ControlLabel>
             <FormControl
               type="email"
@@ -54,7 +58,8 @@ class RegisterForm extends Component {
               onChange={this.handleChange}
             />
           </FormGroup>
-          <FormGroup controlId="password" bsSize="large">
+          <FormGroup controlId="password" bsSize="large"
+            validationState={errors && errors.password ? "error" : null}>
             <ControlLabel>Password</ControlLabel>
             <FormControl
               value={this.state.password}
@@ -77,4 +82,10 @@ class RegisterForm extends Component {
   }
 }
 
-export default connect(null, { register })(RegisterForm);
+const mapStateToProps = state => {
+  return {
+    currentUser: state.currentUser
+  }
+};
+
+export default connect(mapStateToProps, { register })(RegisterForm);

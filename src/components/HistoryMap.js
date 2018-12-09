@@ -115,7 +115,7 @@ class HistoryMap extends Component {
       const long = this.props.history.locations[0].longitude;
       focus = [lat, long];
     }
-    console.log(this.state.zoom);
+
     return (
       <Map style={{height: '85vh'}} center={focus} zoom={this.state.zoom} onZoom={this.handleZoom}>
         <TileLayer

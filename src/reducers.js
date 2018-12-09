@@ -36,6 +36,11 @@ function currentUser(state = null, action) {
       const user = action.payload.body.user;
       localStorage.setItem('token', user.token);
       return user;
+    case `${LOGIN}_REJECTED`:
+    case `${REGISTER}_REJECTED`:
+      return {
+        errors: action.payload.body.errors
+      }
     case LOGOUT:
       return null; // no user
     default:
