@@ -78,7 +78,7 @@ function currentDevice(state = null, action) {
   }
 }
 
-function live(state = {trailLength: 3, updatesPerMin: 10}, action) {
+function live(state = {trailLength: 3, updatesPerMin: 0}, action) {
   switch (action.type) {
     case `${FETCH_USER_LOCATION_LIST}_FULFILLED`:
       return {
