@@ -11,7 +11,8 @@ class HistoryMap extends Component {
     this.handleZoom = this.handleZoom.bind(this);
     this.renderMarker = this.renderMarker.bind(this);
     this.renderMidMarkers = this.renderMidMarkers.bind(this);
-    this.renderHistoricalPath = this.renderHistoricalPath.bind(this);
+    this.renderHistoricalPaths = this.renderHistoricalPaths.bind(this);
+    this.renderPath = this.renderPath.bind(this);
 
     this.midIcon = L.icon({ iconUrl: require('../assets/marker.png') });
 
@@ -53,12 +54,10 @@ class HistoryMap extends Component {
     }
   }
 
-  renderHistoricalPath() {
-    const locations = this.props.history.locations;
+  renderPath(locations) {
     if (locations && locations.length > 0) {
       const endLocation = locations[0];
       const startLocation = locations[locations.length-1];
-
 
       // Draw path, assumed to be in timestamped order
       var path = [];
@@ -76,6 +75,33 @@ class HistoryMap extends Component {
           { this.renderMidMarkers(locations) }
         </div>
       )
+    } else {
+      return undefined; // no location data
+    } 
+  }
+
+  renderHistoricalPaths() {
+    const locations = this.props.history.locations;
+    if (locations && locations.length > 0) {      
+      let pathToRender = [];
+      let renders = [];
+
+      let earlierTime = new Date(locations[0].timestamp);
+      locations.forEach(p => {
+        // Start a new path if over a minute between locations
+        const pTime = new Date(p.timestamp);
+        if (earlierTime - pTime > 60000) {
+          renders.push(this.renderPath(pathToRender)); // store previous path render 
+          pathToRender = []; // restart path
+        }
+
+        // Add point to current path
+        pathToRender.push(p);
+        earlierTime = pTime; // advanced time
+      });
+      renders.push(this.renderPath(pathToRender));
+
+      return renders;
     } else {
       return undefined; // no location data yet
     }
@@ -96,7 +122,7 @@ class HistoryMap extends Component {
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           url='https://{s}.tile.osm.org/{z}/{x}/{y}.png'
         />
-        { this.renderHistoricalPath() }
+        { this.renderHistoricalPaths() }
       </Map>
     );
   }
