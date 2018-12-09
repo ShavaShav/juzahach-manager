@@ -31,7 +31,9 @@ class LiveMap extends Component {
     this.props.fetchLiveLocations(this.props.live.trailLength); // get the latest location
 
     // Fetch the live locations according to update speed and trail length
-    this.fetchTimer = setInterval(this.updateLiveLocations, 60000 / this.props.live.updatesPerMin);
+    if (this.props.live.updatesPerMin > 0) {
+      this.fetchTimer = setInterval(this.updateLiveLocations, 60000 / this.props.live.updatesPerMin);
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -40,8 +42,10 @@ class LiveMap extends Component {
       clearInterval(this.fetchTimer); 
 
       // If no updates, don't start a timer
-      if (nextProps.live.updatesPerMin > 0)
+      if (nextProps.live.updatesPerMin > 0) {
+        this.props.fetchLiveLocations(this.props.live.trailLength);
         this.fetchTimer = setInterval(this.updateLiveLocations, 60000 / nextProps.live.updatesPerMin);
+      }
     }
   }
 
@@ -50,8 +54,6 @@ class LiveMap extends Component {
   }
 
   updateLiveLocations() {
-    const startTime = new Date(); 
-    startTime.setMinutes(startTime.getMinutes() - 30);
     // TODO: let user set trail length via pagination
     this.props.fetchLiveLocations(this.props.live.trailLength); // latest for each device
   }
