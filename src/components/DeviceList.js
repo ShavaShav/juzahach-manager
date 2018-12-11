@@ -22,15 +22,14 @@ class DeviceList extends Component {
     return (
       <ListGroup style={{'maxHeight': '80vh', 'overflowY': 'auto'}}>
         { this.props.deviceList.map(device => (
-          <ListGroupItem 
-            bsStyle={currentDeviceId===device.id?"info":""} // highlight selected
-            className="clearfix" 
-            key={device.id} 
-            onClick={this.handleClick(device)}
-            >
-            {device.name}
-            <EditDevice className="pull-right" device={device} />
-          </ListGroupItem>
+          <div onClick={this.handleClick(device)} key={device.id}>
+            <ListGroupItem 
+              bsStyle={currentDeviceId===device.id?"info":null} // highlight selected
+              className="clearfix">
+              {device.name}
+              <EditDevice className="pull-right" device={device} />
+            </ListGroupItem>
+          </div>
         ))}
       </ListGroup>
     )

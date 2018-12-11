@@ -49,22 +49,24 @@ class HistoryPanel extends Component {
     if (this.props.currentDevice && this.props.history) {
       return (
         <table>
-          <tr>
-            <td>
-              <h5 style={{paddingBottom: '8px'}}>Start</h5>
-              <h5>End</h5>
-            </td>
-            <td style={{paddingLeft: '10px'}}>
-              <DatetimeRangePicker
-                locale='en-US'
-                inline={true}
-                onEndDateChange={this.onEndTimeChange}
-                onStartDateChange={this.onStartTimeChange}
-                endDate={this.props.history.end}
-                startDate={this.props.history.start}
-              />
-            </td>
-          </tr>
+          <tbody>
+            <tr>
+              <td>
+                <h5 style={{paddingBottom: '8px'}}>Start</h5>
+                <h5>End</h5>
+              </td>
+              <td style={{paddingLeft: '10px'}}>
+                <DatetimeRangePicker
+                  locale='en-US'
+                  inline={true}
+                  onEndDateChange={this.onEndTimeChange}
+                  onStartDateChange={this.onStartTimeChange}
+                  endDate={this.props.history.end}
+                  startDate={this.props.history.start}
+                />
+              </td>
+            </tr>             
+          </tbody>
         </table>
       );
     } else {
