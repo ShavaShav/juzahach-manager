@@ -25,26 +25,24 @@ class HistoryPanel extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (this.props.currentDevice) {
-      // If current device changed, grab the history for it
-      if (nextProps.currentDevice.id !== this.props.currentDevice.id) {
-        this.props.fetchLocationHistory(nextProps.currentDevice.id, 
-          this.props.history.start, this.props.history.end);      
-      }
+      // Get the current history for any change to history props (times, device)
+      if (nextProps.currentDevice.id !== this.props.currentDevice.id
+        || nextProps.history.start !== this.props.history.start
+        || nextProps.history.end !== this.props.history.end) {
+          this.props.fetchLocationHistory(nextProps.currentDevice.id, 
+            this.props.history.start, this.props.history.end);
+        }
     }
   }
 
   onStartTimeChange(time) {
     // Update global state and fetch new locations
     this.props.setHistoryStart(time);
-    this.props.fetchLocationHistory(this.props.currentDevice.id, 
-      this.props.history.start, this.props.history.end);
   }
 
   onEndTimeChange(time) {
     // Update global state and fetch new locations
     this.props.setHistoryEnd(time);
-    this.props.fetchLocationHistory(this.props.currentDevice.id, 
-      this.props.history.start, this.props.history.end);
   }
 
   render() {

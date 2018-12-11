@@ -41,11 +41,15 @@ class LiveMap extends Component {
     if (nextProps.live.updatesPerMin !== this.props.live.updatesPerMin) {
       clearInterval(this.fetchTimer); 
 
-      // If no updates, don't start a timer
+      // If no updates, don't start a new timer
       if (nextProps.live.updatesPerMin > 0) {
-        this.props.fetchLiveLocations(this.props.live.trailLength);
         this.fetchTimer = setInterval(this.updateLiveLocations, 60000 / nextProps.live.updatesPerMin);
       }
+    } 
+    
+    if (nextProps.live.trailLength !== this.props.live.trailLength) {
+      // Grab the new trail length of locations unconditionally for responsive update
+      this.props.fetchLiveLocations(this.props.live.trailLength);
     }
   }
 
